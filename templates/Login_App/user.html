@@ -1,0 +1,128 @@
+{% extends 'navbar.html' %}
+{% block title_block %} {{user.user_profile.full_name}} (@{{user.username}}) {% endblock %}
+{% block css_block %}
+<style>
+
+  .crop {
+    height: 50%;
+    width : 50%;
+    object-fit: cover;
+  }
+  .pic img {
+    border-radius: 50%!important;
+    margin-left: 75px;
+    margin-top: -90px;
+}
+.btn-outline-info {
+    color: #82B6D9;
+    border-color: #82B6D9;
+
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+  <div style="background-color: #82B6D9; height: 100px;" >
+    </div>
+  <div class="pic" style="background-color: #ffffff;">
+      {% if user.profile.profile_pic %}
+          <img src="/media/{{user.profile.profile_pic}}" width="160px" height="160px" class=" rounded-circle">
+          {% else %}
+          <img src="/media/default.jpg" width="160px" height="160px" class="rounded-circle">
+          {% endif %}
+      <br>
+    </div>
+   <div style="background-color: #ffffff; padding: 15px;" >
+      <h3>{{user.profile.username}}</h3>
+      <hr style="color:#82B6D9;">
+      <h5><i class="fas fa-edit"></i>&nbsp; &nbsp;{{user.post.count}}Posts &nbsp; &nbsp; &nbsp;<a href="{% url 'Login_App:edit' %}" class="btn btn-outline-info" ><b>Edit Profile</b></a></h5>
+      <hr style="color:#82B6D9;">
+      <h4>{{user.profile.full_name}}</h4>
+      <p>{{user.profile.description|linebreaks}}</p>
+    </div>
+    <br><br> <br>
+</div>
+   <div style="margin-left:32%;">
+      <div class="w3-container">
+        <div class="row" style="height: 50px;">
+        <div style="background-color: #82B6D9; height: 10px;" >
+        </div>
+      <div style="height: 55px; background-color: #ffffff;" >
+        <div class="d-flex bd-highlight">
+          <div class="flex-grow-1 bd-highlight">
+            {% if user.profile.profile_pic %}
+                <a class="nav-link" href="{% url 'Login_App:userprofile' %}"><img src="/media/{{user.profile.profile_pic}}" width="40px" height="40px" class="rounded-circle"></a>
+                {% else %}
+                <a class="nav-link" href="{% url 'Login_App:userprofile' %}"><img src="/media/default.jpg" width="40px" height="40px" class="rounded-circle"></a>
+            {% endif %}
+          </div>
+          <div class="p-2 bd-highlight">
+            <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#myModal">
+             Post a Photo
+             </button>
+          </div>
+          <div class="p-2 bd-highlight">
+            <a href="{% url 'Posts_App:addalbum' %}" class="btn btn" style="background-color: #82B6D9;">Create Album</a>
+          </div>
+        </div>
+        </div>
+        </div>
+          <!-- The Modal -->
+      <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Post a Photo</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <form method="POST" enctype="multipart/form-data">
+                {{form.as_p}}
+                {% csrf_token %}
+                <button type="submit">Post</button>
+              </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+          <br><br>
+          <div class="post_photo">
+              {% for post in user.post.all %}
+               <div class="border rounded " style="background-color: #ffffff;">
+                   <div style="margin-left: 10px;">
+                          {% if post.author.profile.profile_pic %}
+                            <img src="/media/{{post.author.profile.profile_pic}}" width="40px" height="40px" style="margin-top: 15px;" class="rounded-circle">
+                          {% else %}
+                            <img src="/media/default.jpg" width="40px" height="40px" class="rounded-circle">
+                          {% endif %}
+                       <a >&nbsp;{{post.author.profile.username}}</a>
+                       <a >&nbsp;&nbsp;<i class="fas fa-clock" style="color:#82B6D9;"></i>&nbsp;{{post.upload_date}}</a>
+                    </div>
+                   <hr>
+                   <div class="post_caption" style="margin-left: 10px; margin-bottom: 10px;">
+                       {{post.caption}}
+                   </div>
+                   <br>
+                  <img class="crop mx-auto d-block" src="/media/{{post.image}}" >
+                   <br>
+
+                </div>
+                  <hr>
+              {% endfor %}
+          </div>
+      </div>
+
+</div>
+
+{%endblock%}

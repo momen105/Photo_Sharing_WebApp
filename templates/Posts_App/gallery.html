@@ -1,0 +1,61 @@
+{% extends 'navbar.html' %}
+{% block title_block %} gallery {% endblock %}
+
+{% block body_block %}
+  <style>
+        .image-thumbail {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .list-group-item a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+
+ <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                {% if request.user.is_authenticated %}
+                <p>Hello {{request.user}}</p>
+                {% endif %}
+                <div class="card">
+                    <div class="card-header">
+                        Album List
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a href="{% url 'Posts_App:gallery' %}">All</a>
+                        </li>
+                        {% for album in album_list %}
+                        <li class=" list-group-item">
+                            <a href="{% url 'Posts_App:gallery' %}?album={{album.album_name}}">
+                                {{album.album_name}}
+                            </a>
+                        </li>
+                        {% endfor %}
+                        <a href="{% url 'Posts_App:addalbum' %}" class="btn btn-dark btn-block btn-sm m-1">Add Photo</a>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+                    {% for photo in photos %}
+                    <div class="col-md-4">
+                        <div class="card my-2">
+                            <img class="image-thumbail" src="/media/{{photo.image}}" alt="Card image cap">
+                            <div class="card-body">
+                                <small>Album: {{photo.album.album_name}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <h3>No photos...</h3>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
