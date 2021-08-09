@@ -10,7 +10,6 @@ class ProfileForm(ModelForm):
         model = Profile
         exclude = ('user',)
 
-
 class SignUpForm(UserCreationForm):
     class Meta:
         model = User

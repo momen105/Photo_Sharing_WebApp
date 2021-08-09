@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from Login_App.forms import EditProfile
 from Login_App.models import Profile, User
 from Posts_App.forms import PostForm
+from Posts_App.models import Photo,Album
 
 # Authetication
 from django.contrib.auth.forms import AuthenticationForm
@@ -43,16 +44,28 @@ def edit_profile(request):
             form.save(commit=True)
             form = EditProfile(instance=current_user)
             return HttpResponseRedirect(reverse('Login_App:userprofile'))
-    return render(request, 'Login_App/profile.html', context={'form':form, 'title':'Edit Profile . Social'})
+    return render(request, 'Login_App/edit_profile.html', context={'form':form, 'title':'Edit Profile . Social'})
 
 @login_required
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect(reverse('Login_App:login'))
+    return HttpResponseRedirect(reverse('Posts_App:home'))
 
 @login_required
 def userprofile(request):
     form = PostForm()
+    user = request.user
+    album = request.GET.get('album')
+    if album == None:
+        photos = Photo.objects.filter(album__user=user)
+    else:
+        photos = Photo.objects.filter(
+            album__album_name=album, album__user=user)
+        if photos.is_valid():
+            photos.save()
+
+    album_list = Album.objects.filter(user=user)
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -60,4 +73,4 @@ def userprofile(request):
             post.author = request.user
             post.save()
             return HttpResponseRedirect(reverse('home'))
-    return render(request, 'Login_App/user.html', context={'title': 'User', 'form': form})
+    return render(request, 'Login_App/user.html', context={'title': 'User', 'form': form, 'album_list': album_list, 'photos': photos})

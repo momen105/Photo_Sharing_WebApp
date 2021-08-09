@@ -24,28 +24,41 @@
 
 </head>
 <body style="background-color: #F2F2F2;">
-  <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top" style="background-color: #82B6D9!important;">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'Posts_App:home' %}">Home</a>
-      </li>
-      &nbsp; &nbsp; &nbsp; &nbsp;
-      <form class="form-inline" method="GET">
-        <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search">
-        <button class="btn btn-success" type="submit">Search</button>
-      </form>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'Login_App:logout' %}">Logout</a>
-      </li>
-      <li class="nav-item">
-        {% if user.profile.profile_pic %}
-        <a class="nav-link" href="{% url 'Login_App:userprofile' %}"><img src="/media/{{user.profile.profile_pic}}" width="40px" height="40px" class="rounded-circle"></a>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="background-color: #82B6D9!important;">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'Posts_App:home' %}">XYZ</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <div>
+         <a class="nav-link" href="{% url 'Posts_App:home' %}">Home</a>
+      </div>
+      <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+            {% if user.profile.profile_pic %}
+            <a class="nav-link" href="{% url 'Login_App:userprofile' %}"><img src="/media/{{user.profile.profile_pic}}" width="40px" height="40px" class="rounded-circle"></a>
+            {% else %}
+            <a class="nav-link" href="{% url 'Login_App:userprofile' %}"><img src="/media/default.jpg" width="40px" height="40px" class="rounded-circle"></a>
+            {% endif %}
+          </li>
+        <li>
+          <a class="nav-link " href="{% url 'Login_App:logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </li>
+
         {% else %}
-        <a class="nav-link" href="{% url 'Login_App:userprofile' %}"><img src="/media/default.jpg" width="40px" height="40px" class="rounded-circle"></a>
+        <li class="nav-item">
+          <a href="{% url 'Login_App:login' %}" class="btn btn-outline-secondary">Login</a>
+          <a href="{% url 'Login_App:signup' %}" class="btn btn-secondary">SignUp</a>
+        </li>
+
         {% endif %}
-      </li>
-    </ul>
-  </nav>
+      </ul>
+    </div>
+  </div>
+</nav>
 
   <div class="container" style="padding-top:100px;">
     {% block body_block %} {% endblock %}

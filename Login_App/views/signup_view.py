@@ -19,7 +19,6 @@ class Sign_up(View):
             form = SignUpForm(request.POST)
             if form.is_valid():
                 form.save()
-                messages.success(request, "Account Created Successfully!")
                 return HttpResponseRedirect(reverse('Login_App:login'))
         return render(request, 'Login_App/signup.html', context={'title': 'Sign up . Social', 'form': form})
 

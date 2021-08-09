@@ -17,9 +17,12 @@ class Album(models.Model):
     class Meta:
         verbose_name = 'Album'
         verbose_name_plural = 'Album_list'
+        ordering = ['-upload_date', ]
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     album_name = models.CharField(max_length=100, null=False, blank=False)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.album_name
@@ -29,10 +32,14 @@ class Photo(models.Model):
     class Meta:
         verbose_name = 'Photo'
         verbose_name_plural = 'Photos'
+        ordering = ['-upload_date', ]
 
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='album_pic', blank=True)
     a_caption = models.TextField(max_length=264, blank=True)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+
 
     def __str__(self):
         return self.a_caption

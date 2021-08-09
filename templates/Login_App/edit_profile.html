@@ -1,0 +1,19 @@
+{% extends 'navbar.html' %}
+{% load crispy_forms_tags %}
+{%block title_block%}{{title}}{%endblock%}
+{% block body_block %}
+<div class="container mt-5 col-sm-7 border rounded" style="background-color: #ffffff;">
+    <h3 class ="alert alert-light border rounded mt-4 mb-4 rounded " align="center" ><b>Edit Your Profile</b></h3>
+<form method="POST" enctype="multipart/form-data">
+  {{form|crispy}}
+  {% csrf_token %}
+  <div class="text-center">
+    <button type="submit" name="button" class='btn btn-primary btn-lg col-lg-4'>Submit</button>
+  </div>
+  <br>
+  <hr><br>
+</form>
+</div>
+<br>
+<br>
+{% endblock %}

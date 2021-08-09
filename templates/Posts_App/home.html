@@ -2,32 +2,90 @@
 {% block title_block %} {{title}} {% endblock %}
 
 {% block body_block %}
-{% if search %}
-{% for user in result %}
-<div class="row">
-  <div class="col-sm-2">
-    {% if user.profile.profile_pic %}
-    <img src="/media/{{user.profile.profile_pic}}" width="75px" height="75px" class="rounded-circle">
-    {% else %}
-    <img src="/media/default.jpg" width="75px" height="75px" class="rounded-circle">
-    {% endif %}
-  </div>
-  <div class="col-sm-10">
-    <a href="{% url 'Login_App:user' username=user.username %}">{{user.profile.username}}</a>
-    <br>
-    {{user.full_name}}
-  </div>
+<style>
+   .image-thumbail {
+        height: 200px;
+        object-fit: cover;
+    }
+    .list-group-item a {
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<div class="w3-sidebar w3-bar-block w3-card" style="width:22%; right:13%; background-color:#F2F2F2;" id="rightMenu">
+  <div class="row">
+    <hr>
+        <div class="col-sm-4">
+                {% if user.profile.profile_pic %}
+                <img src="/media/{{user.profile.profile_pic}}" width="50px" height="50px" style="margin-left:15%" class="rounded-circle">
+                {% else %}
+                <img src="/media/default.jpg" width="50px" height="50px" style="margin-left:15%" class="rounded-circle">
+                {% endif %}
+          </div>
+           {{user.profile.username}}
+            <br>
+          {{user.profile.full_name}}
+    </div>
+    <hr>
+    <div class="card" style="padding: 10px;">
+        <div class="card-header">
+            Album List
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a href="{% url 'Login_App:userprofile' %}">All</a>
+            </li>
+            {% for album in album_list %}
+            <li class=" list-group-item">
+                <a href="{% url 'Login_App:userprofile' %}?album={{album.album_name}}">
+                    {{album.album_name}}
+                </a>
+            </li>
+            {% endfor %}
+            <a href="{% url 'Posts_App:addalbum' %}" class="btn btn-dark btn-block btn-sm m-1">Add Photo</a>
+        </ul>
+    </div>
+
 </div>
-<br>
 
 
-
+<div class="w3-container" style="margin-left:13%; margin-right:13%; width:50%;">
+  {% if search %}
+  {% for user in result %}
+      <div class="row">
+            <div class="col-sm-2">
+              {% if user.profile.profile_pic %}
+              <img src="/media/{{user.profile.profile_pic}}" width="75px" height="75px" class="rounded-circle">
+              {% else %}
+              <img src="/media/default.jpg" width="75px" height="75px" class="rounded-circle">
+              {% endif %}
+            </div>
+            <div class="col-sm-10">
+              <a href="{% url 'Login_App:user' username=user.username %}">{{user.profile.username}}</a>
+              <br>
+              {{user.full_name}}
+            </div>
+          </div>
 {% endfor %}
 {% else %}
-<div class="row">
-  <div class="col-sm-8">
+   <!-------------------------------------------album------------------------->
+        <div class="row" style="background-color: #ffffff;">
+            <hr style="color: #ffffff">
+            {% for photo in photos %}
+            <div class="col-md-4">
+                <div class="card my-2">
+                    <img class="image-thumbail" src="/media/{{photo.image}}" alt="Card image cap">
+                    <div class="card-body">
+                        <small>Album: {{photo.album.album_name}}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    <br>
+<div class="row" >
       {% for post in posts %}
-      <div style="border: 1px solid #888888;">
+    <div style=" background-color: #ffffff;">
         <div style="padding:10px">
           {% if post.author.profile.profile_pic %}
             <img src="/media/{{post.author.profile.profile_pic}}" width="40px" height="40px" class="rounded-circle">
@@ -48,29 +106,11 @@
           <a href="{% url 'Posts_App:liked' pk=post.pk %}"><i class="far fa-heart" style="font-size:36px"></i></a>
           {% endif %}
         </div>
-      </div>
-      <br>
-      <br>
-      {% endfor %}
-
-  </div>
-  <div class="col-sm-4">
-    <div class="row">
-      <div class="col-sm-4">
-        {% if user.profile.profile_pic %}
-        <img src="/media/{{user.profile.profile_pic}}" width="75px" height="75px" class="rounded-circle">
-        {% else %}
-        <img src="/media/default.png" width="75px" height="75px" class="rounded-circle">
-        {% endif %}
-      </div>
-      <div class="col-sm-8">
-        {{user.profile.username}}
-        <br>
-        {{user.profile.full_name}}
-      </div>
     </div>
-  </div>
+    <hr style="color : #ffffff;">
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
 
-{% endif %}
 {% endblock %}

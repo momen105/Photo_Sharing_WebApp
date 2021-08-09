@@ -18,12 +18,22 @@
     border-color: #82B6D9;
 
     }
+    .image-thumbail {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .list-group-item a {
+        text-decoration: none;
+        color: black;
+    }
 </style>
 {% endblock %}
 
 {% block body_block %}
-<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
-  <div style="background-color: #82B6D9; height: 100px;" >
+
+<div class="w3-sidebar w3-bar-block w3-card " style="width:25%; left:8%" id="leftMenu">
+      <div style="background-color: #82B6D9; height: 100px;" >
     </div>
   <div class="pic" style="background-color: #ffffff;">
       {% if user.profile.profile_pic %}
@@ -42,11 +52,35 @@
       <p>{{user.profile.description|linebreaks}}</p>
     </div>
     <br><br> <br>
+
 </div>
-   <div style="margin-left:32%;">
-      <div class="w3-container">
+
+<div class="w3-sidebar w3-bar-block w3-card" style="width:15%; right:8%;" id="rightMenu">
+    <div class="card" style="padding: 10px;">
+        <div class="card-header">
+            Album List
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a href="{% url 'Login_App:userprofile' %}">All</a>
+            </li>
+            {% for album in album_list %}
+            <li class=" list-group-item">
+                <a href="{% url 'Login_App:userprofile' %}?album={{album.album_name}}">
+                    {{album.album_name}}
+                </a>
+            </li>
+            {% endfor %}
+            <a href="{% url 'Posts_App:addalbum' %}" class="btn btn-dark btn-block btn-sm m-1">Add Photo</a>
+        </ul>
+    </div>
+
+</div>
+<div class="w3-container" style="margin-left:29%; margin-right:4%;">
+    <div class="w3-container" style="width:80%">
+
         <div class="row" style="height: 50px;">
-        <div style="background-color: #82B6D9; height: 10px;" >
+        <div style="background-color: #82B6D9; height: 10px;">
         </div>
       <div style="height: 55px; background-color: #ffffff;" >
         <div class="d-flex bd-highlight">
@@ -68,6 +102,8 @@
         </div>
         </div>
         </div>
+
+
           <!-- The Modal -->
       <div class="modal" id="myModal">
         <div class="modal-dialog">
@@ -96,7 +132,26 @@
           </div>
         </div>
       </div>
-          <br><br>
+          <br>
+         <!-------------------------------------------album------------------------->
+         <div class="row" style="background-color: #ffffff; ">
+             <br>
+             <div>
+                 <h4 class="text-center"><b>Album Photos</b></h4>
+                 <hr>
+             </div>
+                    {% for photo in photos %}
+                    <div class="col-md-4">
+                        <div class="card my-2">
+                            <img class="image-thumbail" src="/media/{{photo.image}}" alt="Card image cap">
+                            <div class="card-body">
+                                <small>Album: {{photo.album.album_name}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+        <hr>
           <div class="post_photo">
               {% for post in user.post.all %}
                <div class="border rounded " style="background-color: #ffffff;">
@@ -116,13 +171,11 @@
                    <br>
                   <img class="crop mx-auto d-block" src="/media/{{post.image}}" >
                    <br>
-
                 </div>
                   <hr>
               {% endfor %}
           </div>
       </div>
-
 </div>
 
 {%endblock%}
