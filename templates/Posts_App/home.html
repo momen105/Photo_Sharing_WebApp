@@ -27,25 +27,6 @@
           {{user.profile.full_name}}
     </div>
     <hr>
-    <div class="card" style="padding: 10px;">
-        <div class="card-header">
-            Album List
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <a href="{% url 'Login_App:userprofile' %}">All</a>
-            </li>
-            {% for album in album_list %}
-            <li class=" list-group-item">
-                <a href="{% url 'Login_App:userprofile' %}?album={{album.album_name}}">
-                    {{album.album_name}}
-                </a>
-            </li>
-            {% endfor %}
-            <a href="{% url 'Posts_App:addalbum' %}" class="btn btn-dark btn-block btn-sm m-1">Add Photo</a>
-        </ul>
-    </div>
-
 </div>
 
 
@@ -68,19 +49,20 @@
           </div>
 {% endfor %}
 {% else %}
-   <!-------------------------------------------album------------------------->
-        <div class="row" style="background-color: #ffffff;">
-            <hr style="color: #ffffff">
-            {% for photo in photos %}
-            <div class="col-md-4">
-                <div class="card my-2">
-                    <img class="image-thumbail" src="/media/{{photo.image}}" alt="Card image cap">
-                    <div class="card-body">
-                        <small>Album: {{photo.album.album_name}}</small>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+
+    <div class="row" style="height: 50px;">
+        <div style="background-color: #82B6D9; height: 10px;">
+        </div>
+      <div style="height: 55px; background-color: #ffffff;" >
+        <div class="d-flex bd-highlight">
+          <div class="p-2 bd-highlight">
+              <a href="{% url 'Posts_App:home' %}" class="btn btn-outline-secondary" >View Single Photos</a>
+          </div>
+          <div class="p-2 bd-highlight">
+            <a href="{% url 'Posts_App:albumshow' %}" class="btn btn" style="background-color: #82B6D9;">View Album Photos</a>
+          </div>
+        </div>
+        </div>
         </div>
     <br>
 <div class="row" >
@@ -101,9 +83,9 @@
         <div style="padding:20px">
           {{ post.liked_post.count }} Likes <br>
           {% if post.pk in liked_post_list %}
-          <a href="{% url 'Posts_App:unliked' pk=post.pk %}"><i class="fas fa-heart" style="font-size:36px"></i></a>
+          <a href="{% url 'Posts_App:unliked' pk=post.pk %}"><i class="far fa-heart" style="font-size:36px"></i></a>
           {% else %}
-          <a href="{% url 'Posts_App:liked' pk=post.pk %}"><i class="far fa-heart" style="font-size:36px"></i></a>
+          <a href="{% url 'Posts_App:liked' pk=post.pk %}"><i class="fas fa-heart" style="font-size:36px"></i></a>
           {% endif %}
         </div>
     </div>

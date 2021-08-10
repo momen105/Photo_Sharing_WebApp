@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from Login_App.forms import EditProfile
 from Login_App.models import Profile, User
 from Posts_App.forms import PostForm
-from Posts_App.models import Photo,Album
+from Posts_App.models import Photo,Album,Post
 
 # Authetication
 from django.contrib.auth.forms import AuthenticationForm
@@ -51,7 +51,7 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('Posts_App:home'))
 
-@login_required
+
 def userprofile(request):
     form = PostForm()
     user = request.user
@@ -61,14 +61,13 @@ def userprofile(request):
     else:
         photos = Photo.objects.filter(
             album__album_name=album, album__user=user)
-        if photos.is_valid():
-            photos.save()
 
     album_list = Album.objects.filter(user=user)
 
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
+            post = Post.objects.private_post()
             post = form.save(commit=False)
             post.author = request.user
             post.save()
