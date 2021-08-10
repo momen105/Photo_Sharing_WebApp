@@ -9,6 +9,7 @@ from django.views import View
 
 from django.views.generic import DetailView
 
+
 # Create your views here.
 class Home(View):
     def get(self, request):
@@ -16,7 +17,9 @@ class Home(View):
         posts = Post.objects.filter(public=True)
         album_list = Album.objects.all
         photos = Photo.objects.all
-        return render(request, 'Posts_App/home.html', context={'title': 'Home', 'posts': posts, 'album_list':album_list, 'photos':photos})
+        return render(request, 'Posts_App/home.html',
+                      context={'title': 'Home', 'posts': posts, 'album_list': album_list, 'photos': photos})
+
 
 @login_required
 def addalbum(request):
@@ -45,6 +48,7 @@ def addalbum(request):
     context = {'album_list': album_list}
     return render(request, 'Posts_App/add_album.html', context)
 
+
 def albumshow(request):
     user = request.user
     album = request.GET.get('album')
@@ -58,6 +62,7 @@ def albumshow(request):
     context = {'album_list': album_list, 'photos': photos}
     return render(request, 'Posts_App/album_home.html', context)
 
+
 @login_required
 def liked(request, pk):
     post = Post.objects.get(pk=pk)
@@ -66,6 +71,7 @@ def liked(request, pk):
         liked_post = Like(post=post, user=request.user)
         liked_post.save()
     return HttpResponseRedirect(reverse('home'))
+
 
 @login_required
 def unliked(request, pk):

@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from Login_App.forms import EditProfile
 from Login_App.models import Profile, User
 from Posts_App.forms import PostForm
-from Posts_App.models import Photo,Album,Post
+from Posts_App.models import Photo, Album, Post
 
 # Authetication
 from django.contrib.auth.forms import AuthenticationForm
@@ -15,11 +15,12 @@ from django.contrib.auth.decorators import login_required
 # Messages
 from django.views import View
 
+
 # Create your views here.
 class Login_user(View):
     def get(self, request):
         form = AuthenticationForm()
-        return render(request, 'Login_App/login.html',context={'form': form})
+        return render(request, 'Login_App/login.html', context={'form': form})
 
     def post(self, request):
         if request.method == 'POST':
@@ -44,7 +45,8 @@ def edit_profile(request):
             form.save(commit=True)
             form = EditProfile(instance=current_user)
             return HttpResponseRedirect(reverse('Login_App:userprofile'))
-    return render(request, 'Login_App/edit_profile.html', context={'form':form, 'title':'Edit Profile . Social'})
+    return render(request, 'Login_App/edit_profile.html', context={'form': form, 'title': 'Edit Profile . Social'})
+
 
 @login_required
 def logout_user(request):
@@ -72,4 +74,5 @@ def userprofile(request):
             post.author = request.user
             post.save()
             return HttpResponseRedirect(reverse('home'))
-    return render(request, 'Login_App/user.html', context={'title': 'User', 'form': form, 'album_list': album_list, 'photos': photos})
+    return render(request, 'Login_App/user.html',
+                  context={'title': 'User', 'form': form, 'album_list': album_list, 'photos': photos})

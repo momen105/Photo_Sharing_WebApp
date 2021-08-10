@@ -1,4 +1,3 @@
-
 from django.db import models
 from Login_App.models import User
 from django.utils import timezone

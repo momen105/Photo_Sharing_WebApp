@@ -15,6 +15,7 @@ from django.dispatch import receiver
 
 class MyUserManager(BaseUserManager):
     """ A custom Manager to deal with emails as unique identifer """
+
     def _create_user(self, email, password, **extra_fields):
         """ Creates and saves a user with a given email and password"""
 
@@ -39,21 +40,20 @@ class MyUserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=False)
     is_staff = models.BooleanField(
         ugettext_lazy('staff status'),
         default=False,
-        help_text = ugettext_lazy('Designates whether the user can log in this site')
+        help_text=ugettext_lazy('Designates whether the user can log in this site')
     )
 
     is_active = models.BooleanField(
         ugettext_lazy('active'),
         default=True,
-        help_text=ugettext_lazy('Designates whether this user should be treated as active. Unselect this instead of deleting accounts')
+        help_text=ugettext_lazy(
+            'Designates whether this user should be treated as active. Unselect this instead of deleting accounts')
     )
-
 
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
@@ -66,8 +66,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
-
-
 
 
 class Profile(models.Model):
@@ -88,14 +86,16 @@ class Profile(models.Model):
 
         for field_name in fields_names:
             value = getattr(self, field_name)
-            if value is None or value=='':
+            if value is None or value == '':
                 return False
         return True
+
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
