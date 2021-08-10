@@ -41,7 +41,7 @@
             {% for album in album_list %}
             <li class=" list-group-item">
                 <a href="{% url 'Posts_App:albumshow' %}?album={{album.album_name}}">
-                    <a> {{album.album_name}} </a> &nbsp;<a style="color:#82B6D9;">Created by :&nbsp; {{album.user.profile.username}}</a>
+                    {{album.album_name}}  &nbsp;<a style="color:#82B6D9;">Created by :&nbsp; {{album.user.profile.username}}</a>
                 </a>
             </li>
             {% endfor %}
