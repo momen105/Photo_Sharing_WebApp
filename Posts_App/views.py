@@ -18,7 +18,7 @@ class Home(View):
         album_list = Album.objects.all
         photos = Photo.objects.all
         return render(request, 'Posts_App/home.html',
-                      context={'title': 'Home', 'posts': posts, 'album_list': album_list, 'photos': photos})
+                      context={'posts': posts, 'album_list': album_list, 'photos': photos})
 
 
 @login_required

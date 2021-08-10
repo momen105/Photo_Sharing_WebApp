@@ -32,7 +32,7 @@ class Login_user(View):
                 if user is not None:
                     login(request, user)
                     return HttpResponseRedirect(reverse('Posts_App:home'))
-        return render(request, 'Login_App/login.html', context={'title': 'Login . Social', 'form': form})
+        return render(request, 'Login_App/login.html', context={'form': form})
 
 
 @login_required
@@ -75,4 +75,4 @@ def userprofile(request):
             post.save()
             return HttpResponseRedirect(reverse('home'))
     return render(request, 'Login_App/user.html',
-                  context={'title': 'User', 'form': form, 'album_list': album_list, 'photos': photos})
+                  context={'form': form, 'album_list': album_list, 'photos': photos})
