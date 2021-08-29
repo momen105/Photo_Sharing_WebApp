@@ -48,7 +48,7 @@ def addalbum(request):
     context = {'album_list': album_list}
     return render(request, 'Posts_App/add_album.html', context)
 
-
+@login_required
 def albumshow(request):
     user = request.user
     album = request.GET.get('album')
