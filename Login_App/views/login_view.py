@@ -64,7 +64,9 @@ def userprofile(request):
         photos = Photo.objects.filter(
             album__album_name=album, album__user=user)
 
+    photos.save(user=user)
     album_list = Album.objects.filter(user=user)
+    album_list.save(user=user)
 
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)

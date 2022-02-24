@@ -22,13 +22,12 @@ class Home(View):
 
 
 @login_required
-def addalbum(request):
+def add_album(request):
     user = request.user
     album_list = user.album_set.all()
     if request.method == 'POST':
         data = request.POST
         images = request.FILES.getlist('images')
-
         if data['album_new'] != '':
             album, created = Album.objects.get_or_create(
                 user=user,
@@ -42,23 +41,15 @@ def addalbum(request):
                 a_caption=data['a_caption'],
                 image=image,
             )
-
         return redirect('Login_App:userprofile')
 
     context = {'album_list': album_list}
     return render(request, 'Posts_App/add_album.html', context)
 
 @login_required
-def albumshow(request):
-    user = request.user
-    album = request.GET.get('album')
-    if album == None:
-        photos = Photo.objects.filter(album__user=user)
-    else:
-        photos = Photo.objects.filter(
-            album__album_name=album, album__user=user)
-    album_list = Album.objects.filter(user=user)
-
+def album_show(request):
+    photos = Photo.objects.all()
+    album_list = Album.objects.all()
     context = {'album_list': album_list, 'photos': photos}
     return render(request, 'Posts_App/album_home.html', context)
 

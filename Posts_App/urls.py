@@ -6,8 +6,8 @@ app_name= 'Posts_App'
 
 urlpatterns = [
     path('', Home.as_view(), name = 'home'),
-    path('album/', views.albumshow, name='albumshow'),
-    path('add_album/', views.addalbum, name='addalbum'),
+    path('album/', views.album_show, name='album_show'),
+    path('add_album/', views.add_album, name='add_album'),
     path('liked/<pk>/', views.liked, name='liked'),
     path('unliked/<pk>/',views.unliked, name='unliked'),
 ]

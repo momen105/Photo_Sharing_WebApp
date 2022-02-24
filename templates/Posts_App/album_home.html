@@ -36,17 +36,18 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <a href="{% url 'Posts_App:albumshow' %}">All</a>
+                <a href="{% url 'Posts_App:album_show' %}">All</a>
             </li>
             {% for album in album_list %}
             <li class=" list-group-item">
-                <a href="{% url 'Posts_App:albumshow' %}?album={{album.album_name}}">
+                <a href="{% url 'Login_App:userprofile' %}?album={{album.album_name}}">
                     {{album.album_name}}  &nbsp;<a style="color:#82B6D9;">Created by :&nbsp; {{album.user.profile.username}}</a>
                 </a>
             </li>
             {% endfor %}
-            <a href="{% url 'Posts_App:addalbum' %}" class="btn btn-dark btn-block btn-sm m-1">Add Photo</a>
+            <a href="{% url 'Posts_App:add_album' %}" class="btn btn-dark btn-block btn-sm m-1">Add Photo</a>
         </ul>
+        <br><br><br><br><br>
     </div>
 </div>
 
@@ -79,7 +80,7 @@
                     <a href="{% url 'Posts_App:home' %}" class="btn btn-outline-secondary">View Single Photos</a>
                 </div>
                 <div class="p-2 bd-highlight">
-                    <a href="{% url 'Posts_App:albumshow' %}" class="btn btn" style="background-color: #82B6D9;">View
+                    <a href="{% url 'Posts_App:album_show' %}" class="btn btn" style="background-color: #82B6D9;">View
                         Album Photos</a>
                 </div>
             </div>
@@ -87,6 +88,8 @@
     </div>
     <br>
     <!-------------------------------------------album------------------------->
+
+
     <div class="row" style="background-color: #ffffff;">
         <hr style="color: #ffffff">
         {% for photo in photos %}
@@ -99,9 +102,9 @@
             </div>
         </div>
         {% endfor %}
+        <hr>
     </div>
     <br>
     {% endif %}
 </div>
-
 {% endblock %}

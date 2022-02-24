@@ -52,7 +52,7 @@ class Album(models.Model):
         verbose_name_plural = 'Album_list'
         ordering = ['-upload_date', ]
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    album_author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='album_aut')
     album_name = models.CharField(max_length=100, null=False, blank=False)
     upload_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
@@ -67,6 +67,7 @@ class Photo(models.Model):
         verbose_name_plural = 'Photos'
         ordering = ['-upload_date', ]
 
+    photo_aut = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='photo_aut')
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='album_pic', blank=True)
     a_caption = models.TextField(max_length=264, blank=True)
